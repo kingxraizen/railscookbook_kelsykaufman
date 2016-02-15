@@ -1,11 +1,12 @@
 class RecipesController < ApplicationController
   before_action :get_categories, :only =>[:new, :edit, :create, :update]
   before_action :set_recipe, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate, :except => [:index, :show]
 
   # GET /recipes
   # GET /recipes.json
   def index
-    @recipes = Recipe.includes(:category).find(params[:id])
+    @recipes = Recipe.all
   end
 
   # GET /recipes/1
@@ -65,21 +66,21 @@ class RecipesController < ApplicationController
   end
 
   private
-  # Use callbacks to share common setup or constraints between actions.
-  def set_recipe
-    @recipe = Recipe.includes(:category).find(params[:id])
-  end
-
-# Never trust parameters from the scary internet, only allow the white list through.
-  def recipe_params
-    params.require(:recipe).permit(:title, :ingredients, :instructions, :category_id)
-  end
-    
-  def title
-    @title = html.match
-  end
-    
-  def get_categories
+    # Use callbacks to share common setup or constraints between actions.
+    def set_recipe
+      @recipe = Recipe.includes(:category).find(params[:id])
+    end
+  
+  # Never trust parameters from the scary internet, only allow the white list through.
+    def recipe_params
+      params.require(:recipe).permit(:title, :ingredients, :instructions, :category_id, :calories)
+    end
+      
+    def title
+      @title = html.match
+    end
+      
+    def get_categories
     @categories = Category.all.collect{|c| [c.name, c.id] }
-  end
+    end
 end
