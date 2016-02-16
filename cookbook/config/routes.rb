@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :categories
   get '/about', to: 'home#about', as: 'about'
   get '/contact', to: 'home#contact', as: 'contact'
+  get '/admin', to: 'admin#index', as: 'admin'
   root to: 'home#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
